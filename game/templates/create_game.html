@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+{% if not user.profile.create_game %}
+<h1> Create new game </h1>
+<form action="#" method="post">
+{% csrf_token %}
+    <label for="secret">Word: </label>
+    <input type="text" name="word" value="" id="word">
+    <label for="desc">Description:</label>
+    <input type="text" name="description" value="" id="description">
+    <input type="submit" value="CREATE" />
+    <input type="hidden" name="next" value="{{ next }}" />
+ </form>
+{% endif %}
+{% endblock %}

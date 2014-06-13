@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+{% if user.profile.play_game %}
+<h1>Game list</h1>
+
+<ul>
+  {% for word in words %}
+    <li class="">
+    	<a  href="#" value="{{ word.word }}">Click to play</a>
+    </li>
+  {% endfor %}
+</ul>
+
+{% endif %}
+{% endblock %}

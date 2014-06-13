@@ -1,0 +1,40 @@
+{% load staticfiles %}
+<html>
+  <head>
+    <title>{% block title %} Hangman {% endblock %}</title>
+  </head>
+
+  <body>
+    <h1> Hangman Game </h1>
+      {{ user }}
+      <!-- {{ user.username }} -->
+    <div>
+      <ul>
+        {% if user.is_authenticated %}
+            <li>User: {{ user }}</li>
+            <li>Score: {{ user.profile.score }}</li>
+            <li><a href="/logout/">Log Out</a></li>
+            {% if user.profile %}
+            <li><a href="/game/game_list/">Play New Game</a></li>
+            <li><a href="/game/create_game/">Create New Game</a></li>
+            {% endif %}
+        {% else %}
+            <li><a href="{% url 'login' %}">Log In</a></li>
+            <li><a href="{% url 'register' %}">Register</a></li>
+        {% endif %}
+      </ul>
+
+      {% comment %} {{ user }}
+      {% if user.is_anonymous %}
+      <a href="{% url 'hangman.views.login' %}">LOGIN</a>
+      {% else %}
+      <a href="{% url 'hangman.views.logout' %}">LOGOUT</a>
+      {% endif %}
+    </div>
+
+      {% endcomment %}
+    {% block content %}{% endblock content %}
+  </div>
+  </body>
+
+</html>
