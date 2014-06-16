@@ -1,4 +1,3 @@
-import random
 import sys
 
 
@@ -54,8 +53,9 @@ HANGMANPICS = ['''
 =========''']
 
 word = raw_input("Enter a word")
+wordlist = []
+wordlist.append(word)
 print word
-noRepeatWord="".join(set(word))
 wrongGuess = ""
 rightGuess = ""
 hidden = "-" * len(word)
@@ -92,10 +92,11 @@ while True:
         rightGuess += guess
     else:
         wrongGuess += guess
+        print "You already used: " , wrongGuess, rightGuess
     display(HANGMANPICS, wrongGuess)
-    if len(wrongGuess) == 10:
+    if len(wrongGuess) == len(HANGMANPICS)-1:
         print " You loose the word was \" {word} \" try next time".format(word=word)
         sys.exit()
-    if len(rightGuess) == len(noRepeatWord):
+    if hidden == word:
         print " You are smart the word was \" {word} \" Good job".format(word = word)
         sys.exit()

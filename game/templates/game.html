@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+{% if not user.profile.play_game %}
+<h1>Your game</h1>
+<form action="#" method="post">
+<label for="letter">Guess a letter:</label>
+<input type="text" name="letter" value="" id="letter">
+<input type="submit" value="ENTER" />
+<input type="hidden" name="next" value="{{ next }}" />
+</form>
+{% endif %}
+{% endblock %}
