@@ -58,22 +58,30 @@ def game_list(request):
 
 
 
-def game_activ(request, id):
+def game_activ(request, word_id):
     user = auth.get_user(request)
     if user and Profile.objects.filter(user=user).count():
+        secret = str(Game.objects.get(id=word_id))
+        hidden = "-"*len(secret)
+        return render_to_response('game.html',{
+                'secret' : secret,
+                'hidden' : hidden,
+                },context_instance=RequestContext(request))  
         if request.method == 'POST':
             user.profile.play_game = True
             user.profile.create_game = False
             user.profile.save()
+            # secret = Game.objects.filter(Q(id=id))
+            # print secret
             letter = request.POST.get("letter")
-
-            return render_to_response('game_list.html',{
-                'secret_word' : secret_word,
+            hidden = '-'*len(secret)
+            return render_to_response('game.html',{
+                'secret' : secret,
                 'hidden' : hidden,
                 'right_guess' : right_guess,
                 'wrong_gues' : wrong_gues,
                 'letter' : letter,
-                },RequestContext(request))
+                },context_instance=RequestContext(request))
         else:
             return render(request, 'game.html')
 

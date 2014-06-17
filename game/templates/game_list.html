@@ -6,7 +6,7 @@
 <ul>
   {% for word in words %}
     <li class="">
-    	<a  href="{% url 'game-activ' id=word.id %}" value="{{ word.word }}">{{ word.word }}</a>
+    	<a  href="{% url 'game-activ' word_id=word.id %}" value="{{ word.word }}">Click</a>
     </li>
   {% endfor %}
 </ul>

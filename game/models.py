@@ -20,3 +20,6 @@ class Game(models.Model):
 	right_guess = models.CharField(max_length = 40)
 	wrong_guess = models.CharField(max_length = 40)
 	player = models.IntegerField(default=0)
+
+	def __str__(self):
+		return self.word
