@@ -1,7 +1,7 @@
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.contrib import auth
-from game.models import Game, Profile
+from .models import Game, Profile
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
@@ -61,26 +61,42 @@ def game_list(request):
 def game_activ(request, word_id):
     user = auth.get_user(request)
     if user and Profile.objects.filter(user=user).count():
-        secret = str(Game.objects.get(id=word_id))
-        hidden = "-"*len(secret)
-        return render_to_response('game.html',{
-                'secret' : secret,
-                'hidden' : hidden,
-                },context_instance=RequestContext(request))  
-        if request.method == 'POST':
+        if request.method == "GET":
+            secret = str(Game.objects.get(id=word_id))
+            desc = Game.objects.get(id=word_id)
+            description = desc.description
+            hidden = "-"*len(secret)
+            return render_to_response('game.html',{
+                    'description' : description,
+                    'secret' : secret,
+                    'hidden' : hidden,
+                    },context_instance=RequestContext(request))  
+        elif request.method == 'POST':
             user.profile.play_game = True
             user.profile.create_game = False
             user.profile.save()
-            # secret = Game.objects.filter(Q(id=id))
-            # print secret
-            letter = request.POST.get("letter")
-            hidden = '-'*len(secret)
+            secret = str(Game.objects.get(id=word_id))
+            hidden = "-"*len(secret)
+            rightGuess = ""
+            wrongGuess = ""
+            guess = str(request.POST.get('letter'))
+            if guess in secret:
+                rightGuess += guess
+                game = Game(createt_by_id = created_by_id, id = word_id, right_guess = rightGuess, player = user.id)
+                game.save()
+            else:
+                wrongGuess += guess
+
+            for i in range(len(secret)):
+                if secret[i] in rightGuess:
+                    hidden = hidden[:i] + secret[i] +hidden[i+1:]
+                    print hidden
             return render_to_response('game.html',{
                 'secret' : secret,
                 'hidden' : hidden,
-                'right_guess' : right_guess,
-                'wrong_gues' : wrong_gues,
-                'letter' : letter,
+                'rightGuess' : rightGuess,
+                'wrongGuess' : wrongGuess,
+                'guess' : guess,
                 },context_instance=RequestContext(request))
         else:
             return render(request, 'game.html')

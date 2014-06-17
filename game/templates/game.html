@@ -2,11 +2,13 @@
 {% block content %}
 {% if not user.profile.play_game %}
 <h1>Your game</h1>
-<p> your word is :</p>
+<p> DESCRIPTION : {{ description }}</p>
 {{ hidden }}
-<form action="#" method="post">
+{{ rightGuess }}
+{{ wrongGuess }}
+<form action="#" method="POST">
 {% csrf_token %}
-<label for="letter">Guess a letter :</label>
+<label for="guess">Guess a letter :</label>
 <input type="text" name="letter" value="" id="letter">
 <input type="submit" value="ENTER" />
 <input type="hidden" name="next" value="{{ next }}" />
