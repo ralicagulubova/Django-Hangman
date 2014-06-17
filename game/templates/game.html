@@ -1,17 +1,15 @@
 {% extends "base.html" %}
 {% block content %}
-{% if not user.profile.play_game %}
 <h1>Your game</h1>
-<p> DESCRIPTION : {{ description }}</p>
-{{ hidden }}
-{{ rightGuess }}
-{{ wrongGuess }}
-<form action="#" method="POST">
+<p> DESCRIPTION : {{ description }} </p>
+<p>{{ hidden }} </p>
+<p> Your right guesses are : {{ rightGuess }}</p>
+<p>Your wrong guesses are: {{ wrongGuess }}</p>
+<form  method="POST">
 {% csrf_token %}
 <label for="guess">Guess a letter :</label>
 <input type="text" name="letter" value="" id="letter">
 <input type="submit" value="ENTER" />
 <input type="hidden" name="next" value="{{ next }}" />
 </form>
-{% endif %}
 {% endblock %}

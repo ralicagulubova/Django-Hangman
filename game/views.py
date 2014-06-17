@@ -75,23 +75,28 @@ def game_activ(request, word_id):
             user.profile.play_game = True
             user.profile.create_game = False
             user.profile.save()
-            secret = str(Game.objects.get(id=word_id))
+            desc = Game.objects.get(id=word_id)
+            description = desc.description
+            secret = desc.word
             hidden = "-"*len(secret)
-            rightGuess = ""
-            wrongGuess = ""
+            rightGuess = desc.right_guess
+            wrongGuess = desc.wrong_guess
             guess = str(request.POST.get('letter'))
             if guess in secret:
                 rightGuess += guess
-                game = Game(createt_by_id = created_by_id, id = word_id, right_guess = rightGuess, player = user.id)
-                game.save()
+                print rightGuess
             else:
                 wrongGuess += guess
-
+                print wrongGuess
+            #Save to model
+            desc.right_guess = rightGuess
+            desc.save()
             for i in range(len(secret)):
                 if secret[i] in rightGuess:
                     hidden = hidden[:i] + secret[i] +hidden[i+1:]
                     print hidden
             return render_to_response('game.html',{
+                'description' : description,
                 'secret' : secret,
                 'hidden' : hidden,
                 'rightGuess' : rightGuess,
